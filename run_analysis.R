@@ -41,7 +41,7 @@ test <- load_data_fn('UCI HAR Dataset','test')
 data <- rbind(train,test)
 
 # Step 2: Extract only the measurements on the mean and standard deviation for each measurement
-select_data <- data[,grep('Subject|Activity|.*_mean_?|.*_std_?',colnames(data))]
+select_data <- data[,grep('Subject|Activity|.*_mean($|_)|.*_std($|_)',colnames(data))]
 
 # Step 3: Use descriptive activity names to name the activities in the data set
 # This was done while loading the data. See line 29
