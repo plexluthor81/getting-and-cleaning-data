@@ -41,11 +41,7 @@ test <- load_data_fn('UCI HAR Dataset','test')
 data <- rbind(train,test)
 
 # Step 2: Extract only the measurements on the mean and standard deviation for each measurement
-variable_list <- c("tBodyAcc","tGravityAcc","tBodyAccJerk","tBodyGyro","tBodyGyroJerk",
-                   "tBodyAccMag","tGravityAccMag","tBodyAccJerkMag","tBodyGyroMag",
-                   "tBodyGyroJerkMag","fBodyAcc","fBodyAccJerk","fBodyGyro","fBodyAccMag",
-                   "fBodyAccJerkMag","fBodyGyroMag","fBodyGyroJerkMag")
-select_data <- data[,grep('Subject|Activity|.*_mean.*|.*_std.*',colnames(data))]
+select_data <- data[,grep('Subject|Activity|.*_mean_?|.*_std_?',colnames(data))]
 
 # Step 3: Use descriptive activity names to name the activities in the data set
 # This was done while loading the data. See line 29
@@ -54,6 +50,7 @@ select_data <- data[,grep('Subject|Activity|.*_mean.*|.*_std.*',colnames(data))]
 # Not sure what this means--the data was already labeled with descriptive names
 
 # Step 5: From the data set in step 4, create a second, independent tidy data set with the average of each variable for each activity and each subject
+# I could probably figure out how to do this with just base lapply, but data.table will make my life so much easier!
 library(data.table)
 dt <- data.table(select_data)
 select_data_means <- dt[, lapply(.SD, mean), by="Subject,Activity"]
